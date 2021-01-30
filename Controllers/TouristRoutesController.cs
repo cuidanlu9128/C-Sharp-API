@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace FakeXiecheng.API.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/[controller]")] // api/touristroutes
     [ApiController]
     public class TouristRoutesController : ControllerBase
     {
@@ -19,10 +19,18 @@ namespace FakeXiecheng.API.Controllers
             _touristRouteRepository = touristRouteRepository;
         }
 
-        public IActionResult GerTouristRoutes()
+        [HttpGet]
+        public IActionResult GetTouristRoutes()
         {
             var routes = _touristRouteRepository.GetTouristRoutes();
             return Ok(routes);
+        }
+
+        //api/touristroutes/{touristRouteId}
+        [HttpGet("{touristRouteId}")]
+        public IActionResult GetTouristRouteById(Guid touristRouteId)
+        {
+            return Ok(_touristRouteRepository.GetTouristRoute(touristRouteId));
         }
     }
 }
