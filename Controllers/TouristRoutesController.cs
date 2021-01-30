@@ -22,15 +22,24 @@ namespace FakeXiecheng.API.Controllers
         [HttpGet]
         public IActionResult GetTouristRoutes()
         {
-            var routes = _touristRouteRepository.GetTouristRoutes();
-            return Ok(routes);
+            var touristRoutesFromRepo = _touristRouteRepository.GetTouristRoutes();
+            if (touristRoutesFromRepo == null && touristRoutesFromRepo.Count() <= 0)
+            {
+                return NotFound("There are no routes.");
+            }
+            return Ok(touristRoutesFromRepo);
         }
 
         //api/touristroutes/{touristRouteId}
         [HttpGet("{touristRouteId}")]
         public IActionResult GetTouristRouteById(Guid touristRouteId)
         {
-            return Ok(_touristRouteRepository.GetTouristRoute(touristRouteId));
+            var touristRouteFromRepo = _touristRouteRepository.GetTouristRoute(touristRouteId);
+            if (touristRouteFromRepo == null)
+            {
+                return NotFound($"The id {touristRouteId} does not exist.");
+            }
+            return Ok(touristRouteFromRepo);
         }
     }
 }
