@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using FakeXiecheng.API.Databases;
 using FakeXiecheng.API.Services;
 using Microsoft.AspNetCore.Builder;
@@ -40,6 +41,8 @@ namespace FakeXiecheng.API
             {
                 option.UseSqlServer(Configuration["DbContext:ConnectionString"]);
             });
+
+            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
