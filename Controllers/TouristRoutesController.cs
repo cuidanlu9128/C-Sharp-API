@@ -23,11 +23,12 @@ namespace FakeXiecheng.API.Controllers
             _touristRouteRepository = touristRouteRepository;
             _mapper = mapper;
         }
-
+        //api/touristRoutes?keyword=[input]
         [HttpGet]
-        public IActionResult GetTouristRoutes()
+        [HttpHead]
+        public IActionResult GetTouristRoutes([FromQuery] string keyword)
         {
-            var touristRoutesFromRepo = _touristRouteRepository.GetTouristRoutes();
+            var touristRoutesFromRepo = _touristRouteRepository.GetTouristRoutes(keyword);
             if (touristRoutesFromRepo == null && touristRoutesFromRepo.Count() <= 0)
             {
                 return NotFound("There are no routes.");
@@ -45,22 +46,7 @@ namespace FakeXiecheng.API.Controllers
             {
                 return NotFound($"The id {touristRouteId} does not exist.");
             }
-            //var touristRouteDto = new TouristRouteDto()
-            //{
-            //    Id = touristRouteFromRepo.Id,
-            //    Title = touristRouteFromRepo.Title,
-            //    Description = touristRouteFromRepo.Description,
-            //    Price = touristRouteFromRepo.OriginalPrice * (decimal)(touristRouteFromRepo.DiscountPresent ?? 1),
-            //    CreateTime = touristRouteFromRepo.CreateTime,
-            //    UpdateTime = touristRouteFromRepo.UpdateTime,
-            //    Features = touristRouteFromRepo.Features,
-            //    Fees = touristRouteFromRepo.Fees,
-            //    Notes = touristRouteFromRepo.Notes,
-            //    Rating = touristRouteFromRepo.Rating,
-            //    TravelDays = touristRouteFromRepo.TravelDays.ToString(),
-            //    TripType = touristRouteFromRepo.TripType.ToString(),
-            //    DepartureCity = touristRouteFromRepo.DepartureCity.ToString()
-            //};
+
             var touristRouteDto = _mapper.Map<TouristRouteDto>(touristRouteFromRepo);
             return Ok(touristRouteDto);
         }
