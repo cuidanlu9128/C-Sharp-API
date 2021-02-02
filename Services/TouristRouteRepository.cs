@@ -1,5 +1,6 @@
 ﻿using FakeXiecheng.API.Databases;
 using FakeXiecheng.API.Models;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,12 +18,12 @@ namespace FakeXiecheng.API.Services
         }
         public TouristRoute GetTouristRoute(Guid touristRouteId)
         {
-            return _context.touristRoutes.FirstOrDefault(n => n.Id == touristRouteId);
+            return _context.touristRoutes.Include(t => t.TouristRoutePictures).FirstOrDefault(n => n.Id == touristRouteId);
         }
 
         public IEnumerable<TouristRoute> GetTouristRoutes()
         {
-            return _context.touristRoutes;
+            return _context.touristRoutes.Include(t => t.TouristRoutePictures);
         }
 
         public bool TouristRouteExists(Guid touristRouteId)
@@ -33,6 +34,11 @@ namespace FakeXiecheng.API.Services
         public IEnumerable<TouristRoutePicture> GetPicturesByTouristRouteId(Guid touristRouteId)
         {
             return _context.touristRoutePictures.Where(p => p.TouristRouteId == touristRouteId).ToList();
+        }
+
+        public TouristRoutePicture GetPicture(int pictureId)
+        {
+            return _context.touristRoutePictures.Where(p => p.Id == pictureId).FirstOrDefault();
         }
     }
 }
