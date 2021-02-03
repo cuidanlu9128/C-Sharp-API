@@ -21,7 +21,7 @@ namespace FakeXiecheng.API.Services
             return _context.touristRoutes.Include(t => t.TouristRoutePictures).FirstOrDefault(n => n.Id == touristRouteId);
         }
 
-        public IEnumerable<TouristRoute> GetTouristRoutes(string keyword)
+        public IEnumerable<TouristRoute> GetTouristRoutes(string keyword, string ratingOperator, int? ratingValue)
         {
             IQueryable<TouristRoute> result = _context.touristRoutes.Include(t => t.TouristRoutePictures);
 
@@ -29,6 +29,21 @@ namespace FakeXiecheng.API.Services
             {
                 keyword = keyword.Trim();
                 result = result.Where(t => t.Title.Contains(keyword));
+            }
+            if (ratingValue >= 0)
+            {
+                switch(ratingOperator)
+                {
+                    case "largerThan":
+                        result = result.Where(t => t.Rating >= ratingValue);
+                        break;
+                    case "lessThan":
+                        result = result.Where(t => t.Rating <= ratingValue);
+                        break;
+                    case "equalTo":
+                        result = result.Where(t => t.Rating == ratingValue);
+                        break;
+                }
             }
 
             return result.ToList();
