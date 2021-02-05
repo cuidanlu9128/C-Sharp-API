@@ -63,5 +63,51 @@ namespace FakeXiecheng.API.Services
         {
             return _context.touristRoutePictures.Where(p => p.Id == pictureId).FirstOrDefault();
         }
+
+        public void AddTouristRoute(TouristRoute touristRoute)
+        {
+            if (touristRoute == null)
+            {
+                throw new ArgumentException(nameof(touristRoute));
+            }
+            _context.touristRoutes.Add(touristRoute);
+        }
+
+        public void AddTouristRoutePicture(Guid touristRouteId, TouristRoutePicture touristRoutePicture)
+        {
+            if (touristRouteId == Guid.Empty)
+            {
+                throw new ArgumentNullException(nameof(touristRouteId));
+            }
+            if (touristRoutePicture == null)
+            {
+                throw new ArgumentNullException(nameof(touristRoutePicture));
+            }
+            touristRoutePicture.TouristRouteId = touristRouteId;
+            _context.touristRoutePictures.Add(touristRoutePicture);
+        }
+        public bool Save()
+        {
+            return (_context.SaveChanges() >= 0);
+        }
+
+        public void DeleteTouristRoute(TouristRoute touristRoute)
+        {
+            _context.touristRoutes.Remove(touristRoute);
+        }
+        public void DeleteTouristRoutePicture(TouristRoutePicture touristRoutePicture)
+        {
+            _context.touristRoutePictures.Remove(touristRoutePicture);
+        }
+
+        public IEnumerable<TouristRoute> GetTouristRoutesByIDList(IEnumerable<Guid> ids)
+        {
+            return _context.touristRoutes.Where(t => ids.Contains(t.Id)).ToList();
+        }
+
+        public void DeleteTouristRoutes(IEnumerable<TouristRoute> touristRoutes)
+        {
+            _context.touristRoutes.RemoveRange(touristRoutes);
+        }
     }
 }

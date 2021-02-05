@@ -12,6 +12,8 @@ namespace FakeXiecheng.API.Databases
 {
     public class AppDbContext : DbContext
     {
+        internal object touristRoute;
+
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {
 

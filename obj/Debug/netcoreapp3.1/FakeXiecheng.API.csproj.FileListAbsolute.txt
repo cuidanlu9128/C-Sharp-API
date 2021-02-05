@@ -137,3 +137,6 @@ C:\Users\cdl\Desktop\3.3\FakeXiecheng.API\bin\Debug\netcoreapp3.1\Databases\tour
 C:\Users\cdl\Desktop\3.3\FakeXiecheng.API\bin\Debug\netcoreapp3.1\Databases\touristRoutesMockData.json
 C:\Users\cdl\Desktop\3.3\FakeXiecheng.API\bin\Debug\netcoreapp3.1\AutoMapper.dll
 C:\Users\cdl\Desktop\3.3\FakeXiecheng.API\bin\Debug\netcoreapp3.1\AutoMapper.Extensions.Microsoft.DependencyInjection.dll
+C:\Users\cdl\Desktop\3.3\FakeXiecheng.API\bin\Debug\netcoreapp3.1\Microsoft.AspNetCore.JsonPatch.dll
+C:\Users\cdl\Desktop\3.3\FakeXiecheng.API\bin\Debug\netcoreapp3.1\Microsoft.AspNetCore.Mvc.NewtonsoftJson.dll
+C:\Users\cdl\Desktop\3.3\FakeXiecheng.API\bin\Debug\netcoreapp3.1\Newtonsoft.Json.Bson.dll
