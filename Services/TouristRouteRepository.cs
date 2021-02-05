@@ -16,12 +16,12 @@ namespace FakeXiecheng.API.Services
         {
             _context = context;
         }
-        public TouristRoute GetTouristRoute(Guid touristRouteId)
+        public async Task<TouristRoute> GetTouristRouteAsync(Guid touristRouteId)
         {
-            return _context.touristRoutes.Include(t => t.TouristRoutePictures).FirstOrDefault(n => n.Id == touristRouteId);
+            return await _context.touristRoutes.Include(t => t.TouristRoutePictures).FirstOrDefaultAsync(n => n.Id == touristRouteId);
         }
 
-        public IEnumerable<TouristRoute> GetTouristRoutes(string keyword, string ratingOperator, int? ratingValue)
+        public async Task<IEnumerable<TouristRoute>> GetTouristRoutesAsync(string keyword, string ratingOperator, int? ratingValue)
         {
             IQueryable<TouristRoute> result = _context.touristRoutes.Include(t => t.TouristRoutePictures);
 
@@ -46,22 +46,22 @@ namespace FakeXiecheng.API.Services
                 }
             }
 
-            return result.ToList();
+            return await result.ToListAsync();
         }
 
-        public bool TouristRouteExists(Guid touristRouteId)
+        public async Task<bool> TouristRouteExistsAsync(Guid touristRouteId)
         {
-            return _context.touristRoutes.Any(t => t.Id == touristRouteId);
+            return await _context.touristRoutes.AnyAsync(t => t.Id == touristRouteId);
         }
 
-        public IEnumerable<TouristRoutePicture> GetPicturesByTouristRouteId(Guid touristRouteId)
+        public async Task<IEnumerable<TouristRoutePicture>> GetPicturesByTouristRouteIdAsync(Guid touristRouteId)
         {
-            return _context.touristRoutePictures.Where(p => p.TouristRouteId == touristRouteId).ToList();
+            return await _context.touristRoutePictures.Where(p => p.TouristRouteId == touristRouteId).ToListAsync();
         }
 
-        public TouristRoutePicture GetPicture(int pictureId)
+        public async Task<TouristRoutePicture> GetPictureAsync(int pictureId)
         {
-            return _context.touristRoutePictures.Where(p => p.Id == pictureId).FirstOrDefault();
+            return await _context.touristRoutePictures.Where(p => p.Id == pictureId).FirstOrDefaultAsync();
         }
 
         public void AddTouristRoute(TouristRoute touristRoute)
@@ -86,9 +86,9 @@ namespace FakeXiecheng.API.Services
             touristRoutePicture.TouristRouteId = touristRouteId;
             _context.touristRoutePictures.Add(touristRoutePicture);
         }
-        public bool Save()
+        public async Task<bool> SaveAsync()
         {
-            return (_context.SaveChanges() >= 0);
+            return (await _context.SaveChangesAsync() >= 0);
         }
 
         public void DeleteTouristRoute(TouristRoute touristRoute)
@@ -100,9 +100,9 @@ namespace FakeXiecheng.API.Services
             _context.touristRoutePictures.Remove(touristRoutePicture);
         }
 
-        public IEnumerable<TouristRoute> GetTouristRoutesByIDList(IEnumerable<Guid> ids)
+        public async Task<IEnumerable<TouristRoute>> GetTouristRoutesByIDList(IEnumerable<Guid> ids)
         {
-            return _context.touristRoutes.Where(t => ids.Contains(t.Id)).ToList();
+            return await _context.touristRoutes.Where(t => ids.Contains(t.Id)).ToListAsync();
         }
 
         public void DeleteTouristRoutes(IEnumerable<TouristRoute> touristRoutes)
