@@ -1,18 +1,17 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using AutoMapper;
 using FakeXiecheng.API.Databases;
 using FakeXiecheng.API.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Newtonsoft.Json.Serialization;
 
 namespace FakeXiecheng.API
 {
@@ -31,12 +30,32 @@ namespace FakeXiecheng.API
             services.AddControllers(setupAction =>
             {
                 setupAction.ReturnHttpNotAcceptable = true;
-                //setupAction.OutputFormatters.Add(
-                //    new XmlDataContractSerializerOutputFormatter());
-            }).AddXmlDataContractSerializerFormatters();
+            })
+            .AddNewtonsoftJson(setupAction =>
+            {
+                setupAction.SerializerSettings.ContractResolver =
+                    new CamelCasePropertyNamesContractResolver();
+            })
+            .AddXmlDataContractSerializerFormatters()
+            .ConfigureApiBehaviorOptions(setupAction =>
+            setupAction.InvalidModelStateResponseFactory = context =>
+            {
+                var problemDetail = new ValidationProblemDetails(context.ModelState)
+                {
+                    Type = "haha",
+                    Title = "The request is invalid.",
+                    Status = StatusCodes.Status422UnprocessableEntity,
+                    Detail = "Please read the instrument.",
+                    Instance = context.HttpContext.Request.Path
+                };
+                problemDetail.Extensions.Add("traceId", context.HttpContext.TraceIdentifier);
+                return new UnprocessableEntityObjectResult(problemDetail)
+                {
+                    ContentTypes = { "application/problem+json" }
+                };
+            });
             services.AddTransient<ITouristRouteRepository, TouristRouteRepository>();
-            //services.AddSingleton
-            //services.AddScoped
+
             services.AddDbContext<AppDbContext>(option =>
             {
                 option.UseSqlServer(Configuration["DbContext:ConnectionString"]);
@@ -57,17 +76,6 @@ namespace FakeXiecheng.API
 
             app.UseEndpoints(endpoints =>
             {
-                //endpoints.MapGet("/test", async context =>
-                //{
-                //    throw new Exception("test");
-                //    //await context.Response.WriteAsync("Hello from test!");
-                //});
-
-                //endpoints.MapGet("/", async context =>
-                //{
-                //    await context.Response.WriteAsync("Hello World!");
-                //});
-
                 endpoints.MapControllers();
             });
         }

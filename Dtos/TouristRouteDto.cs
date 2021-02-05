@@ -9,7 +9,6 @@ namespace FakeXiecheng.API.Dtos
         public Guid Id { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
-        //Price = OriginalPrice * DiscountPresent
         public decimal Price { get; set; }
         public DateTime CreateTime { get; set; }
         public DateTime? UpdateTime { get; set; }
