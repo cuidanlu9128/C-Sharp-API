@@ -1,4 +1,6 @@
 ﻿using FakeXiecheng.API.Models;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using System;
@@ -10,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace FakeXiecheng.API.Databases
 {
-    public class AppDbContext : DbContext
+    public class AppDbContext : IdentityDbContext<IdentityUser>
     {
         internal object touristRoute;
 
