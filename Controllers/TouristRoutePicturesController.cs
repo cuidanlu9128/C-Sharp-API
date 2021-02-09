@@ -2,6 +2,7 @@
 using FakeXiecheng.API.Dtos;
 using FakeXiecheng.API.Models;
 using FakeXiecheng.API.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -56,6 +57,9 @@ namespace FakeXiecheng.API.Controllers
             return Ok(_mapper.Map<TouristRoutePictureDto>(pictureFromRepo));
         }
 
+        [HttpPost]
+        [Authorize(AuthenticationSchemes = "Bearer")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> CreateTouristRoutePicture(
             [FromRoute] Guid touristRouteId,
             [FromBody] TouristRoutePictureForCreationDto touristRoutePictureForCreationDto
@@ -81,6 +85,8 @@ namespace FakeXiecheng.API.Controllers
         }
 
         [HttpDelete("{pictureId}")]
+        [Authorize(AuthenticationSchemes = "Bearer")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteTouristRoutePicture(
             [FromRoute] Guid touristRouteId,
             [FromRoute] int pictureId)
