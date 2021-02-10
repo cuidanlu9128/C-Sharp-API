@@ -20,9 +20,11 @@ namespace FakeXiecheng.API.Databases
         {
 
         }
-        
+
         public DbSet<TouristRoute> touristRoutes { get; set; }
         public DbSet<TouristRoutePicture> touristRoutePictures { get; set; }
+        public DbSet<ShoppingCart> ShoppingCarts { get; set; }
+        public DbSet<LineItem> LineItems { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
